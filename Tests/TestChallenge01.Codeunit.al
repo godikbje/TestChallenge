@@ -115,6 +115,19 @@ codeunit 50126 "Test Challenge 01"
     end;
 
     [Test]
+    procedure TestAddComment7()
+    var
+        Text: Text[1024];
+        OriginalText: Text[1024];
+    begin
+        Text := PadStr('', 1020, 'X');
+        OriginalText := Text;
+        AddComment(Text, '1234');
+        if not (Text = OriginalText) then
+            Error('Expected: We so not accept partial comments. "%1"', Text);
+    end;
+
+    [Test]
     procedure TestEvaluateDateFromXMLDateTime1()
     var
         Date: Date;

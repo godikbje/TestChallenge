@@ -10,17 +10,39 @@ codeunit 50125 "Solutions"
         // The comments are separated by the Separator text.
         // More details can be deducted from the test itself.
         // Implement your solution here.
-
-        AllComments := '';
+        if NewComment = '' then
+            exit;
+        if strlen(AllComments + Separator + NewComment) > 1024 then
+            exit;
+        if AllComments = '' then
+            AllComments := NewComment
+        else
+            if strpos(AllComments, NewComment) = 0 then
+                AllComments += Separator + NewComment;
     end;
 
 
     procedure EvaluateDateFromXMLDateTime(var Date: Date; ISO8601DateTime: Text): Boolean
+    var
+        Day: Integer;
+        Month: Integer;
+        Year: Integer;
     begin
         // The function is supposed to extract the date from an ISO 8601 DateTime and return it through the Date variable
         // If a valid date was found, the function returns TRUE otherwise FALSE.
         // More details can be deducted from the test itself.
         // Implement your solution here. You can use the TryDMY2DATE function below.
+        if ISO8601DateTime = '' then
+            exit(false);
+        if not Evaluate(Year, copystr(ISO8601DateTime, 1, 4)) then
+            exit(false);
+        if not Evaluate(Month, copystr(ISO8601DateTime, 6, 2))
+        then
+            exit(false);
+        if not Evaluate(Day, copystr(ISO8601DateTime, 9, 2)) then
+            exit(false);
+        if TryDMY2DATE(Day, Month, Year, Date) then
+            exit(true);
 
         Date := 0D;
         exit(false);
